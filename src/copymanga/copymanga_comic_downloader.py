@@ -2,10 +2,11 @@ import os
 from spider_toolbox import file_tools
 from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm
-from src import drew_comment_pic, check_comic_download, remove_end_ad, config_info, pic_downloader, ai_image_processor
+from src import drew_comment_pic, check_comic_download, remove_end_ad, config_info, pic_downloader, ai_image_processor, add_mango_watermark
 
 download_path = config_info.download_path
-
+script_directory = os.path.dirname(os.path.abspath(__file__))
+watermark_folder = os.path.join(script_directory, 'watermark')
 
 class Comic_downloader:
     def __init__(self, comic_name, chapter_pic_comments):
@@ -48,6 +49,8 @@ class Comic_downloader:
         remove_end_ad.main(self.workdir)
         # ai优化
         ai_image_processor.main(self.workdir)
+        # 添加mango水印
+        add_mango_watermark.main(self.workdir, watermark_folder) 
 
 
 if __name__ == '__main__':
